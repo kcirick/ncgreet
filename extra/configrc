@@ -1,0 +1,9 @@
+# NCGreet config file
+
+#poweroff_cmd = systemctl poweroff -i
+#reboot_cmd = systemctl reboot -i
+
+#session_dir = /usr/local/share/wayland-sessions
+#last_session_file = /var/lib/greeter/ncgreet_lastsession
+
+#timeformat = %a %b %d, %H:%M

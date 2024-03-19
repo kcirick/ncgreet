@@ -42,7 +42,11 @@ Edit /etc/greetd/config.toml
 
 **Configuration of ncgreet**
 
-Still not yet implemented
+Copy extra/configrc to /var/lib/greetd/ncgreet-configrc (default location), or anywhere (/foo/bar/ncgreet-configrc), then load:
+
+    ncgreet --config /foo/bar/ncgreet-configrc
+
+
 
 ## Version log
 

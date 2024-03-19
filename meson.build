@@ -10,6 +10,11 @@ project (
   ],
 )
 
+add_project_arguments(
+  [ '-DVERSION="@0@"'.format(meson.project_version()) ],
+  language: 'cpp'
+)
+
 prefix = get_option('prefix')
 
 ncurses = dependency('ncurses')

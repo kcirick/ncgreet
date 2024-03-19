@@ -32,7 +32,7 @@ Greeter::draw_topbar()
    wmove(topbar, 0, COLS-10);
    waddstr(topbar, "F3:Clear");
 
-   strftime(time_str, 64, "%a %b %d, %R", now_tm);
+   strftime(time_str, 64, (configurator->get_timeformat()).c_str(), now_tm);
    int len_time = strlen(time_str);
    mvwprintw(topbar, 0, (COLS-len_time)/2, time_str); 
 
@@ -161,6 +161,8 @@ Greeter::scroll_menu(WINDOW* window, MENU* menu)
 void
 Greeter::scroll_sessions(enum ScrollDirection dir)
 {
+   if(nsessions==0) return;
+
    icursession = dir==PREV ? icursession-1 : icursession+1;
    // wrap around
    if(icursession<0) icursession = nsessions-1;
@@ -202,10 +204,14 @@ Greeter::try_authenticate(Authenticator* authenticator,
    
    // Find out the session command
    string session_cmd;
-   for(int i=0; i<nsessions; i++) {
-      if(session_names[i]==session){
-         session_cmd = session_cmds[i];
-         break;
+   if(nsessions==0){
+      session_cmd = "/bin/bash";
+   } else {
+      for(int i=0; i<nsessions; i++) {
+         if(session_names[i]==session){
+            session_cmd = session_cmds[i];
+            break;
+         }
       }
    }
 
@@ -233,22 +239,24 @@ Greeter::init_greeter(Configurator* configurator, string hostname)
    
    //set up colours
    start_color();
-   init_pair(1, COLOR_WHITE, COLOR_BLACK);
-   init_pair(2, COLOR_BLACK, COLOR_WHITE);
-   //init_pair(1, COLOR_BLACK, COLOR_BLUE);
-   //init_pair(2, COLOR_BLUE, COLOR_BLACK);
+   //init_pair(1, COLOR_WHITE, COLOR_BLACK);
+   //init_pair(2, COLOR_BLACK, COLOR_WHITE);
+   init_pair(1, COLOR_BLACK, COLOR_BLUE);
+   init_pair(2, COLOR_BLUE, COLOR_BLACK);
    
    // Get sessions from configurator
    nsessions = configurator->get_nsessions();
-   session_names = configurator->get_session_names();
-   session_cmds = configurator->get_session_cmds();
-   session = configurator->read_last_session();
-   if(session.empty()){
-      icursession = 0;
-      session = session_names[icursession];
-   } else {
-      for(int i=0; i<nsessions; i++){
-         if(session==session_names[i]) icursession = i;
+   if(nsessions>0) {
+      session_names = configurator->get_session_names();
+      session_cmds = configurator->get_session_cmds();
+      session = configurator->read_last_session();
+      if(session.empty()){
+         icursession = 0;
+         session = session_names[icursession];
+      } else {
+         for(int i=0; i<nsessions; i++){
+            if(session==session_names[i]) icursession = i;
+         }
       }
    }
    this->configurator = configurator;
@@ -279,7 +287,7 @@ Greeter::process(Authenticator* authenticator)
 {
    int key;
    string cmd;
-   while(key = getch()) {
+   while((key = getch())) {
 
       // Erase message bar and wait for the user input
       werase(messagebar);

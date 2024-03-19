@@ -30,7 +30,8 @@ getToken(string &str, char delim)
    return token;
 }
 
-void spawn(string cmd) {
+void 
+spawn(string cmd) {
    char* sh = NULL;
    if(!(sh=getenv("SHELL"))) sh = (char*)"/bin/sh";
 
@@ -55,7 +56,6 @@ create_timer(Greeter* greeter)
 {
    struct sigevent sev;
    memset(&sev, 0, sizeof(struct sigevent));
-
    sev.sigev_notify = SIGEV_THREAD;
    sev.sigev_notify_function = &timer_handler;
    sev.sigev_value.sival_ptr = greeter;
@@ -86,9 +86,17 @@ main(int argc, char ** argv)
       if(iarg=="--debug") debug = true;
       if(iarg=="--config" && ((i+1)<argc)) 
          config_file = argv[++i];
+      if(iarg=="--version"){
+         cout << "ncgreet version-" << VERSION << endl;
+         exit(EXIT_SUCCESS);
+      }
+      if(iarg=="--help") {
+         cout << "Usage: ncgreet [--config file][--debug][--version][--help]" << endl;
+         exit(EXIT_SUCCESS);
+      }
    }
    if(config_file.empty())
-      config_file = "/etc/greetd/ncgreet_configrc";
+      config_file = "/var/lib/greetd/ncgreet_configrc";
 
    Configurator *configurator = new Configurator();
    configurator -> read_config(config_file);

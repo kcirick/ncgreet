@@ -18,6 +18,7 @@ class Configurator {
 
       string get_poweroff_cmd() { return poweroff_cmd; };
       string get_reboot_cmd() { return reboot_cmd; };
+      string get_timeformat() { return timeformat; };
 
    private:
       int nsessions;
@@ -28,6 +29,7 @@ class Configurator {
       string reboot_cmd;
       string session_dir;
       string last_session_file;
+      string timeformat;
 
       //--- functions
       void set_defaults();

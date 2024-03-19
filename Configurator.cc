@@ -77,8 +77,10 @@ Configurator::set_defaults()
    poweroff_cmd = "systemctl poweroff -i";
    reboot_cmd   = "systemctl reboot -i";
 
-   session_dir = "/usr/local/share/wayland-sessions";
-   last_session_file = "/var/lib/greeter/ncgreet_lastsession";
+   session_dir = "/usr/share/wayland-sessions";
+   last_session_file = "/var/lib/greetd/ncgreet_lastsession";
+
+   timeformat = "%R"; 
 }
 
 void
@@ -100,6 +102,8 @@ Configurator::read_config(string filename)
 
          if(id == "session_dir")       session_dir = value;
          if(id == "last_session_file") last_session_file = value;
+
+         if(id == "timeformat")     timeformat = value;
       }
    }
 
