@@ -32,13 +32,23 @@ getToken(string &str, char delim)
 
 void 
 spawn(string cmd) {
-   char* sh = NULL;
-   if(!(sh=getenv("SHELL"))) sh = (char*)"/bin/sh";
+   //char* sh = NULL;
+   //if(!(sh=getenv("SHELL"))) sh = (char*)"/bin/sh";
+   int argc=0;
+   char *argv[64];
+
+   char *p2 = strtok(cmd.data(), " ");
+   while (p2 && argc < 64-1) {
+      argv[argc++] = p2;
+      p2 = strtok(0, " ");
+   }
+   argv[argc] = 0;
 
    if(fork()==0){
       dup2(STDERR_FILENO, STDOUT_FILENO);
       setsid();
-      execl(sh, sh, "-c", cmd.c_str(), (char*)NULL);
+      //execl(sh, sh, "-c", cmd.c_str(), (char*)NULL);
+      execvp(argv[0], argv);
    }
 }
 
