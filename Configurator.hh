@@ -18,6 +18,7 @@ class Configurator {
 
       string get_poweroff_cmd() { return poweroff_cmd; };
       string get_reboot_cmd() { return reboot_cmd; };
+      string get_suspend_cmd() { return suspend_cmd; };
       string get_timeformat() { return timeformat; };
 
    private:
@@ -27,6 +28,7 @@ class Configurator {
 
       string poweroff_cmd;
       string reboot_cmd;
+      string suspend_cmd;
       string session_dir;
       string last_session_file;
       string timeformat;

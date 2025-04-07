@@ -29,8 +29,11 @@ Greeter::draw_topbar()
    wmove(topbar, 0, 17);
    waddstr(topbar, "F2:Reboot");
 
+   wmove(topbar, 0, 29);
+   waddstr(topbar, "F3:Suspend");
+
    wmove(topbar, 0, COLS-10);
-   waddstr(topbar, "F3:Clear");
+   waddstr(topbar, "ESC:Clear");
 
    strftime(time_str, 64, (configurator->get_timeformat()).c_str(), now_tm);
    int len_time = strlen(time_str);
@@ -304,6 +307,11 @@ Greeter::process(Authenticator* authenticator)
             spawn(cmd);
             break;
          case KEY_F(3):
+            cmd = configurator->get_suspend_cmd();
+            wprintw(messagebar, "[*] Suspend: %s", cmd.c_str());
+            spawn(cmd);
+            break;
+         case ESCAPE:
             wprintw(messagebar, "[*] Clear");
             clear_fields();
             //redrawwin(topbar);

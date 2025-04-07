@@ -76,6 +76,7 @@ Configurator::set_defaults()
 {
    poweroff_cmd = "systemctl poweroff -i";
    reboot_cmd   = "systemctl reboot -i";
+   suspend_cmd  = "systemctl suspend -i";
 
    session_dir = "/usr/share/wayland-sessions";
    last_session_file = "/var/lib/greetd/ncgreet_lastsession";
@@ -99,6 +100,7 @@ Configurator::read_config(string filename)
 
          if(id == "poweroff_cmd")   poweroff_cmd = value;
          if(id == "reboot_cmd")     reboot_cmd = value;
+         if(id == "suspend_cmd")    suspend_cmd = value;
 
          if(id == "session_dir")       session_dir = value;
          if(id == "last_session_file") last_session_file = value;
